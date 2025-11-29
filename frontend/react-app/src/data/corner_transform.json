@@ -1,0 +1,14 @@
+{
+  "created_at": "2025-11-28T23:08:40.774Z",
+  "transform": {
+    "s": 0.14298631569566914,
+    "cos": 0.9998767977031291,
+    "sin": -0.015696796327146576,
+    "tx": -8184981.172436595,
+    "ty": 5700454.70671917,
+    "angle": -0.01569744098603641
+  },
+  "corners_count": 14,
+  "seedS": 0.15152558158828816,
+  "notes": "Similarity transform (s, cos, sin, tx, ty). tx/ty are in EPSG:3857 meters; angle is in radians."
+}
