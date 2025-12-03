@@ -5,13 +5,13 @@ import Navbar from './components/Navbar'
 import driversData from './data/drivers.json'
 import cornerTransform from './data/corner_transform.json'
 
-// Import corners at build time so Vite bundles the data and the map can render synchronously.
+// Bundle corners so the map can render immediately.
 import cornersData from './data/corners.json'
 import caGeo from './data/ca-1978.json'
 import BrakeAnalysis from './components/BrakeAnalysis'
 import SpeedAnalysis from './components/SpeedAnalysis'
 import Footer from './components/Footer'
-// Explicit per-driver lap importers so we only load when user selects a driver.
+// Per-driver lap importers (load on demand).
 const lapImporters: Record<string, () => Promise<any>> = {
   ALB: () => import('./data/laps/ALB.json'),
   ALO: () => import('./data/laps/ALO.json'),
@@ -46,7 +46,7 @@ type Corners = {
 export default function App() {
   const corners: Corners = cornersData as unknown as Corners
 
-  // Lifted selection + telemetry state so analyses and TrackMap share the same data
+  // Shared selection and telemetry state for child components
   const [selectedDriverCode, setSelectedDriverCode] = React.useState<string>('VER')
   const [telemetryModule, setTelemetryModule] = React.useState<any | null>(null)
   const telemetry = telemetryModule && telemetryModule.tel ? telemetryModule.tel : null
@@ -99,7 +99,7 @@ export default function App() {
     return [] as [number, number][]
   }, [telemetry])
 
-  // compute turn markers by finding nearest telemetry index for each corner coordinate
+  // Compute turn markers by nearest telemetry index
   const turnsForChart = React.useMemo(() => {
     if (!telemetry || !telemetryLatLngs || telemetryLatLngs.length === 0) return [] as { distance?: number; label?: string }[]
     const t = (cornerTransform && (cornerTransform as any).transform) ? (cornerTransform as any).transform : null
@@ -142,7 +142,7 @@ export default function App() {
     return turns
   }, [telemetry, telemetryLatLngs, corners])
 
-  // driver color lookup
+  // Lookup driver color
   const driversList: Driver[] = (driversData && (driversData as any).drivers) ? (driversData as any).drivers : []
   const matched = driversList.find(d => d.driver === selectedDriverCode) || driversList[0] || { driver: 'VER', team: 'Red Bull Racing', color: '#1E22AA' }
   const driver = { name: matched.driver, team: matched.team, color: matched.color }

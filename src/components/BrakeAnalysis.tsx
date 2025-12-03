@@ -14,7 +14,7 @@ type Props = {
 export default function BrakeAnalysis({ positions, brake, distances, turns, height = '320px', zoom = 1.5 }: Props) {
   if (!positions || positions.length < 2) return null
 
-  // Build colored segments: green when not braking (brake==0), red when braking (brake>0).
+  // Build brake segments: red = braking, green = coasting
   const segments = React.useMemo(() => {
     if (!positions || positions.length < 2) return [] as { points: [number, number][]; color: string }[]
     if (!brake || brake.length < 2) {
@@ -44,7 +44,7 @@ export default function BrakeAnalysis({ positions, brake, distances, turns, heig
     return segs
   }, [positions, brake])
 
-  // Compute svg mapping and paths (tight bbox)
+  // Compute SVG mapping and paths
   const svgData = React.useMemo(() => {
     if (!positions || positions.length === 0) return null
     const lats = positions.map(p => p[0])

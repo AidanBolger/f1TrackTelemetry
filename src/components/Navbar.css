@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   right: 0;
-  /* very high z-index to ensure navbar stays above all other UI layers */
+  /* High z-index to keep navbar on top */
   z-index: 2147483647;
   padding: 20px 28px;
   background: #1a1f2e;
@@ -29,7 +29,7 @@
   .app-sub{font-size:16px}
 }
 
-/* On small screens stack title and nav */
+/* Stack title and nav on small screens */
 @media(max-width:900px){
   .app-navbar-inner{flex-direction:column;align-items:flex-start}
   .app-nav-links{margin-top:8px}

@@ -1,34 +1,30 @@
-/* Shared analysis styles (migrated from SectorTime.css) */
+/* Shared analysis styles */
 .sector-time-root{
 	box-sizing: border-box;
 	display: block;
-	/* center horizontally */
+	/* Center horizontally */
 	margin: 0 auto;
-	/* allow flexible width/height — SVG will preserve data aspect ratio */
+	/* Flexible size; SVG preserves aspect ratio */
 	max-width: 100%;
 }
 .sector-time-root > svg { border-radius: 8px; display: block; background: var(--bg, var(--panel-bg, #061226)); }
 
-/* Ensure both SVGs inside analysis components share the same layout/styling */
+/* Shared SVG layout */
 .sector-time-root .sector-time-svg{
 	display:block;
 	width:100%;
-	/* use the CSS var provided by the component for consistent height */
-	height: var(--sector-height, 320px);
+    /* Use CSS var for height */
+    height: var(--sector-height, 320px);
 	border-radius:8px;
 	background: var(--bg, var(--panel-bg, #061226));
 }
+.sector-time-root .sector-time-svg path{ vector-effect: non-scaling-stroke }
 
-/* Make stroke rendering consistent */
-.sector-time-root .sector-time-svg path{
-	vector-effect: non-scaling-stroke;
-}
-
-/* wrapper to hold title + square */
+/* Wrapper for title */
 .sector-time-block{display:flex;flex-direction:column;align-items:center;gap:8px}
 .sector-time-title{font-size:18px;color:#cfe3ff;font-weight:600;text-align:center; margin-top: 18px;}
 
-/* Legend for speed gradient */
+/* Speed legend */
 .sector-time-legend{display:flex;flex-direction:column;gap:6px;margin-top:6px}
 .sector-time-legend-bar{height:10px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,0.03)}
 .sector-time-legend-labels{display:flex;justify-content:space-between;font-size:12px;color:#cfe3ff}

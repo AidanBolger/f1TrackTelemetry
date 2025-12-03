@@ -6,7 +6,7 @@ type Turn = { index?: number; distance?: number; label?: string }
 type Props = {
   distances: number[] // x
   speeds: number[] // y
-  turns?: Turn[] // each turn either has index (into arrays) or distance
+  turns?: Turn[] // turn index or distance
   height?: number
   padding?: number
   yLabel?: string
@@ -110,7 +110,7 @@ export default function SpeedDistanceChart({
         }}
         onMouseLeave={() => {(setHoverIndex as any)(null); (setHoverXY as any)(null)}}
       >
-        {/* hover visuals will be rendered inside SVG when state exists */}
+        {/* Hover visuals rendered from state */}
         <rect x="0" y="0" width={w} height={h} className="sd-bg" rx="6" />
         <g className="sd-grid">
           {yTickVals.map((val, i) => {
@@ -125,7 +125,7 @@ export default function SpeedDistanceChart({
 
         <g className="sd-axes">
           <text x={w / 2} y={h - 6} className="sd-axis-label">Distance</text>
-          {/* rotate via SVG transform around a point so CSS transforms don't push it outside the viewBox */}
+          {/* Rotate label via SVG transform */}
           <text
             x={12}
             y={h / 2}
@@ -172,7 +172,7 @@ export default function SpeedDistanceChart({
           })}
         </g>
 
-        {/* hover guide + dot */}
+        {/* Hover guide */}
         {hoverIndex != null && hoverXY ? (
           <g className="sd-hover">
             <line x1={hoverXY.x} x2={hoverXY.x} y1={pad} y2={h - pad} className="sd-hover-line" />
@@ -191,4 +191,4 @@ export default function SpeedDistanceChart({
   )
 }
 
-// hover helper functions removed; state is managed with React hooks above
+// Hover handled with React hooks

@@ -16,9 +16,9 @@ body{
 }
 .app h1{margin:0 0 .5rem}
 
-/* leave space for fixed navbar */
+/* Space for fixed navbar */
 .app-main{
   padding: 16px;
-  /* restore a small visual gap beneath the fixed navbar */
-  padding-top: 112px; /* increased to give extra space below navbar */
+  /* Extra top padding for navbar */
+  padding-top: 112px;
 }

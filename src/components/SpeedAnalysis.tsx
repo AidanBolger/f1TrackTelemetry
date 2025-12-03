@@ -26,7 +26,7 @@ type Props = {
 export default function SpeedAnalysis({ positions, distances, speeds, turns, height = '320px', zoom = 1.5 }: Props) {
   if (!positions || positions.length < 2) return null
 
-  // compute svg mapping & per-point speed segments (gradient)
+  // Compute SVG mapping and speed segments
   const svgData = React.useMemo(() => {
     const lats = positions.map(p => p[0])
     const lngs = positions.map(p => p[1])
