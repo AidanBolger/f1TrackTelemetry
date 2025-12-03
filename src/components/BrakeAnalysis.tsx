@@ -125,6 +125,7 @@ export default function BrakeAnalysis({ positions, brake, distances, turns, heig
 
   return (
     <div className="sector-time-root" style={{ ['--sector-height' as any]: height }}>
+    <div className="sector-time-title">Brake Analysis</div>
       <div className="sector-time-block">
         <svg className="sector-time-svg"
           viewBox={`${svgData.viewMinX} ${svgData.viewMinY} ${svgData.viewW} ${svgData.viewH}`}
