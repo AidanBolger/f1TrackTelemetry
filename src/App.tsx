@@ -10,6 +10,7 @@ import cornersData from './data/corners.json'
 import caGeo from './data/ca-1978.json'
 import BrakeAnalysis from './components/BrakeAnalysis'
 import SpeedAnalysis from './components/SpeedAnalysis'
+import Footer from './components/Footer'
 // Explicit per-driver lap importers so we only load when user selects a driver.
 const lapImporters: Record<string, () => Promise<any>> = {
   ALB: () => import('./data/laps/ALB.json'),
@@ -175,6 +176,8 @@ export default function App() {
           />
         </div>
       </main>
+      <Footer />
     </div>
   )
 }
+
