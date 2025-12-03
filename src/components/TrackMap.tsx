@@ -32,8 +32,8 @@ const lapImporters: Record<string, () => Promise<any>> = {
   VER: () => import('../data/laps/VER.json'),
 }
 
-// Default fitBounds padding (tight so the track fills more of the viewport)
-const DEFAULT_PADDING: [number, number] = [4, 4]
+// Default fitBounds padding (smaller for a tighter zoom)
+const DEFAULT_PADDING: [number, number] = [2, 2]
 
 type Corners = {
   CornerNumber: number[]
@@ -55,8 +55,8 @@ function FitBoundsGeo({ coords }: { coords: [number, number][] }) {
     const latlngs = coords.map(c => L.latLng(c[1], c[0]))
     const bounds = L.latLngBounds(latlngs as any)
     setTimeout(() => map.invalidateSize(), 0)
-    // Use tight padding so the track fills more of the viewport
-    map.fitBounds(bounds, { padding: DEFAULT_PADDING })
+    // Use tight padding and limit max zoom so the track fills more of the viewport
+    map.fitBounds(bounds, { padding: DEFAULT_PADDING, maxZoom: 18 })
   }, [map, coords])
   return null
 }
@@ -86,6 +86,7 @@ export default function TrackMap({
   const mapRef = React.useRef<any | null>(null)
   const playbackRef = React.useRef<HTMLDivElement | null>(null)
   const telemetryRef = React.useRef<HTMLDivElement | null>(null)
+  const leftRef = React.useRef<HTMLDivElement | null>(null)
   const cornerPoints = useMemo(() => {
     if (!corners) return [] as { x: number; y: number; idx: number; num?: number }[]
     const { X, Y, CornerNumber } = corners
@@ -419,6 +420,46 @@ export default function TrackMap({
       }
     }, [telemetryRef.current, playbackRef.current, telemetry, currentIndex])
 
+    // Refit map when layout changes (left column or telemetry height changes)
+    React.useEffect(() => {
+      if (!highResGeo || !highResGeo.features || !highResGeo.features.length) return
+      const map = mapRef.current
+      if (!map) return
+
+      const coords: [number, number][] = highResGeo.features[0].geometry.coordinates
+
+      const doFit = () => {
+        try {
+          const latlngs = coords.map(c => L.latLng(c[1], c[0]))
+          const bounds = L.latLngBounds(latlngs as any)
+          // allow layout to settle then invalidate and fit
+          setTimeout(() => {
+            try { map.invalidateSize() } catch (e) {}
+            try { map.fitBounds(bounds, { padding: DEFAULT_PADDING, maxZoom: 18 }) } catch (e) {}
+          }, 50)
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      // Initial fit
+      doFit()
+
+      const ResizeObserverCtor = (window as any).ResizeObserver as any | undefined
+      const ro = ResizeObserverCtor ? new ResizeObserverCtor(() => doFit()) : null
+      try {
+        if (ro && leftRef.current) ro.observe(leftRef.current)
+        if (ro && telemetryRef.current) ro.observe(telemetryRef.current)
+      } catch (e) {}
+
+      window.addEventListener('resize', doFit)
+      return () => {
+        try { if (ro && leftRef.current) ro.unobserve(leftRef.current) } catch (e) {}
+        try { if (ro && telemetryRef.current) ro.unobserve(telemetryRef.current) } catch (e) {}
+        window.removeEventListener('resize', doFit)
+      }
+    }, [highResGeo, telemetry])
+
 
   return (
     <div className="tm-container">
@@ -459,7 +500,7 @@ export default function TrackMap({
                   const latlngs = coords.map(c => L.latLng(c[1], c[0]))
                   const bounds = L.latLngBounds(latlngs as any)
                   setTimeout(() => mapRef.current.invalidateSize(), 0)
-                  mapRef.current.fitBounds(bounds, { padding: DEFAULT_PADDING })
+                  mapRef.current.fitBounds(bounds, { padding: DEFAULT_PADDING, maxZoom: 18 })
                 } catch (e) {}
               }}
             >
