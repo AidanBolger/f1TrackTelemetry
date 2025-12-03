@@ -49,3 +49,5 @@ venv/
 
 # NOTE: intentionally not ignoring lockfiles (package-lock.json, yarn.lock) and repo data files
 # so they remain tracked for reproducible installs and demos.
+backend/
+database/
