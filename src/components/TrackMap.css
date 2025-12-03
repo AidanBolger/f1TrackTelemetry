@@ -232,3 +232,54 @@
 .tm-bar-vertical .tm-bar-fill-throttle{background:#3ac569;width:100%;height:0%;position:absolute;left:0;bottom:0;transition:height 120ms linear;border-radius:6px}
 .tm-bar-vertical .tm-bar-fill-brake{background:#ff6b6b;width:100%;height:0%;position:absolute;left:0;bottom:0;transition:height 120ms linear;border-radius:6px}
 .tm-bar-vertical .tm-bar-label{left:50%;top:50%;transform:translate(-50%,-50%);right:auto}
+
+/* Scroll hint indicator (bottom-right of map) */
+.scroll-hint{
+	position: absolute;
+	left: 12px;
+	right: auto;
+	bottom: 12px;
+	width: 38px;
+	height: 38px;
+	border-radius: 20px;
+	background: rgba(0,0,0,0.45);
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	box-shadow: 0 6px 18px rgba(2,6,23,0.5);
+	z-index: 750;
+	cursor: pointer;
+	transition: transform 220ms ease, opacity 220ms ease, background-color 180ms ease;
+	opacity: 0.95;
+	animation: scrollHintMove 1600ms ease-in-out infinite;
+}
+.scroll-hint svg{ width:18px; height:18px; color: #fff; transition: color 180ms ease; }
+
+/* Hover / focus — invert to white with dark icon */
+.scroll-hint:hover,
+.scroll-hint:focus{
+	background: #ffffff;
+	transform: translateY(-2px);
+	opacity: 1;
+}
+.scroll-hint:hover svg,
+.scroll-hint:focus svg{
+	color: #000000;
+}
+
+/* Focus-visible for keyboard users */
+.scroll-hint:focus-visible{
+	outline: 3px solid rgba(43,122,228,0.18);
+	outline-offset: 2px;
+}
+
+/* When clicked, keep the original dark appearance even on hover */
+.scroll-hint.clicked{ background: rgba(0,0,0,0.45); transform: none; opacity: 0.95; }
+.scroll-hint.clicked svg{ color: #fff }
+.scroll-hint.clicked:hover{ background: rgba(0,0,0,0.45); }
+
+@keyframes scrollHintMove{
+	0%{ transform: translateY(0); }
+	50%{ transform: translateY(6px); }
+	100%{ transform: translateY(0); }
+}

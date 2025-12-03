@@ -7,6 +7,7 @@ import cornerTransform from '../data/corner_transform.json'
 // Driver lap telemetry (loaded dynamically)
 import driversData from '../data/drivers.json'
 import './TrackMap.css'
+import ScrollHint from './ScrollHint'
 
 // Per-driver lap importers (load on demand). Avoids Vite dynamic-import issues.
 const lapImporters: Record<string, () => Promise<any>> = {
@@ -464,7 +465,7 @@ export default function TrackMap({
   return (
     <div className="tm-container">
       {/* Map column */}
-      <div className="tm-left">
+      <div className="tm-left" ref={leftRef}>
         {!highResGeo || !highResGeo.features || !highResGeo.features.length ? (
           <div style={{ padding: 20 }}>No high-resolution GeoJSON track provided.</div>
         ) : (
@@ -506,6 +507,9 @@ export default function TrackMap({
             >
               Refit Map
             </button>
+
+            {/* Scroll hint: indicates there's more content below the map */}
+            <ScrollHint />
           </>
         )}
       </div>
