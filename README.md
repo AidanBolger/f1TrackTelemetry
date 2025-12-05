@@ -29,7 +29,6 @@ This repository contains the F1TrackTelemetry React app (Vite + React + TypeScri
 Quick commands:
 
 ```powershell
-cd "d:\personal projects\f1demonstration"
 npm install
 npm run dev
 ```
